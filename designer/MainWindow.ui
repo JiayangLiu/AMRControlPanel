@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>590</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>AMR Control Panel</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>0</y>
+      <width>171</width>
+      <height>551</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>No-go Zone</string>
+    </property>
+    <widget class="QPushButton" name="pushButton_AddZone">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>510</y>
+       <width>70</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_DeleteZone">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>510</y>
+       <width>70</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Delete</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="listWidget_NoGoZone">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>151</width>
+       <height>471</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_ControlPanel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>601</width>
+      <height>551</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Control Panel</string>
+    </property>
+    <widget class="QPushButton" name="pushButton_BuildMap">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>510</y>
+       <width>160</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Build Map</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_LoadMap">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>510</y>
+       <width>160</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Load Map</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_StartCleaning">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>510</y>
+       <width>160</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start Cleaning</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_mapdisplay">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>581</width>
+       <height>471</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>To start, please click &quot;Build Map&quot; to let robot start scanning the environment, or &quot;Load Map&quot; to use a existed map.</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="margin">
+      <number>50</number>
+     </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
