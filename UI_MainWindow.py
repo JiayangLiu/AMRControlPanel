@@ -1,8 +1,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEventLoop, QTimer
 import os
+import time
+import random
 
 class Ui_MainWindow(QtWidgets.QWidget):
     def setupUi(self, MainWindow):
@@ -103,18 +105,27 @@ class Ui_MainWindow(QtWidgets.QWidget):
 
     # action when click button "Load map"
     def clickButton_LoadMap(self):
-        fname = QFileDialog.getOpenFileName(self, 'Open file', os.getcwd()+'/map', "Image files (*.jpg *.gif *.png)")
+        fname = QFileDialog.getOpenFileName(self, 'Open file', os.getcwd()+'/map', "Image files (*.jpg *.pgm *.png)")
         self.imagePath = fname[0]
         pixmap = QPixmap(self.imagePath)
         self.label_MapDisplay.setPixmap(QPixmap(pixmap))
         # clear action when load a new map
         self.rectangleDict = {}
         self.listWidget_NoGoZone.clear()
+        self.pathPointList = []
 
     # action when click button "Start cleaning"
     def clickButton_StartCleaning(self):
-        # TODO: after path planning finished
-        print('pushButton_StartCleaning clicked')
+        # step 1: export the current map image with current no-go zones
+        pixmap = self.label_MapDisplay.pixmap()
+        localtime = time.asctime(time.localtime(time.time()))
+        localtime = '_'.join(localtime.split())
+        exportMapFileName = os.getcwd() + '/map/exported/' + localtime + '.pgm'
+        pixmap.save(exportMapFileName, 'PGM')
+        print('Map image export finish: ' + exportMapFileName)
+
+        # step 2: execute cleaning script
+        self.robotMoveDemo()
 
     # action when click button "Add zone"
     def clickButton_AddZone(self):
@@ -161,12 +172,47 @@ class Ui_MainWindow(QtWidgets.QWidget):
     def updatePixMap(self):
         pixmap = QPixmap(self.imagePath)
         painterInstnace = QtGui.QPainter(pixmap)
-        painterInstnace.setBrush(QtGui.QBrush(QtGui.QColor(100, 10, 10, 40)))
+        painterInstnace.setBrush(QtGui.QBrush(QtGui.QColor(0, 0, 0)))
         for dictKey in self.rectangleDict:
             painterInstnace.drawRect(self.rectangleDict.get(dictKey))
+        painterInstnace.setPen(QtGui.QPen(Qt.green, 2))
+        if len(self.pathPointList) > 0:
+            for i in range(len(self.pathPointList)):
+                painterInstnace.drawPoint(self.pathPointList[i])
+                if i != 0:
+                    painterInstnace.drawLine(self.pathPointList[i-1], self.pathPointList[i])
         self.label_MapDisplay.setPixmap(pixmap)
         self.label_MapDisplay.show()
         painterInstnace.end()       # to avoid error msg "QPaintDevice: Cannot destroy paint device that is being painted"
+
+    # robot move demo
+    def robotMoveDemo(self):
+        label_RobotDisplay = QtWidgets.QLabel(self.groupBox_ControlPanel)
+        label_RobotDisplay.setAlignment(QtCore.Qt.AlignCenter)
+        label_RobotDisplay.setWordWrap(True)
+        label_RobotDisplay.setIndent(0)
+        label_RobotDisplay.setObjectName("label_RobotDisplay")
+        label_RobotDisplay.setScaledContents(False)
+
+        robotImagePath = os.getcwd() + '/resources/robot.png'
+        robotPixmap = QPixmap(robotImagePath)
+        label_RobotDisplay.setPixmap(QPixmap(robotPixmap))
+
+        startPosX = 70
+        startPosY = 50
+        robotLength = 10
+        robotWidth = 10
+        for i in range(200):
+            loop = QEventLoop()
+            QTimer.singleShot(100, loop.quit)
+            loop.exec_()
+            x = startPosX+i+random.randint(0, 10)
+            y = startPosY+i+random.randint(0, 10)
+            label_RobotDisplay.setGeometry(QtCore.QRect(x, y, startPosX+robotLength, startPosY+robotWidth))
+            label_RobotDisplay.show()
+            self.pathPointList.append(QtCore.QPoint(x+robotLength*3, y))
+            self.updatePixMap()
+
 
 if __name__ == "__main__":
     import sys
